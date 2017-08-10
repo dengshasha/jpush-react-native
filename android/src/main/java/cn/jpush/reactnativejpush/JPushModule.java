@@ -424,6 +424,15 @@ public class JPushModule extends ReactContextBaseJavaModule {
                     String message = data.getStringExtra(JPushInterface.EXTRA_MESSAGE);
                     Logger.i(TAG, "收到自定义消息: " + message);
                     mEvent = RECEIVE_CUSTOM_MESSAGE;
+                    //add by melody
+                    JPushLocalNotification jpush = new JPushLocalNotification();
+                    jpush.setBuilderId(0);
+                    jpush.setContent("你收到了一条未读消息");
+                    jpush.setTitle("玩家生活");
+                    jpush.setNotificationId(123);
+                    jpush.setBroadcastTime(System.currentTimeMillis());
+                    JPushInterface.addLocalNotification(context, jpush);
+
                     if (mRAC != null) {
                         sendEvent();
                     }
