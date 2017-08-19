@@ -87,7 +87,7 @@ public class JPushModule extends ReactContextBaseJavaModule {
     public void initPush() {
         mContext = getCurrentActivity();
         JPushInterface.init(getReactApplicationContext());
-        Logger.toast(mContext, "Init push success");
+        //Logger.toast(mContext, "Init push success");
         Logger.i(TAG, "init Success!");
     }
 
@@ -112,7 +112,7 @@ public class JPushModule extends ReactContextBaseJavaModule {
         mContext = getCurrentActivity();
         JPushInterface.stopPush(getReactApplicationContext());
         Logger.i(TAG, "Stop push");
-        Logger.toast(mContext, "Stop push success");
+        //Logger.toast(mContext, "Stop push success");
     }
 
     @ReactMethod
@@ -120,7 +120,7 @@ public class JPushModule extends ReactContextBaseJavaModule {
         mContext = getCurrentActivity();
         JPushInterface.resumePush(getReactApplicationContext());
         Logger.i(TAG, "Resume push");
-        Logger.toast(mContext, "Resume push success");
+        //Logger.toast(mContext, "Resume push success");
     }
 
     @ReactMethod
@@ -264,7 +264,7 @@ public class JPushModule extends ReactContextBaseJavaModule {
         Set<String> tagSet = new LinkedHashSet<>();
         for (int i = 0; i < strArray.size(); i++) {
             if (!ExampleUtil.isValidTagAndAlias(strArray.getString(i))) {
-                Logger.toast(getReactApplicationContext(), "Invalid tag !");
+                //Logger.toast(getReactApplicationContext(), "Invalid tag !");
             }
             tagSet.add(strArray.getString(i));
         }
@@ -341,7 +341,7 @@ public class JPushModule extends ReactContextBaseJavaModule {
             builder.notificationFlags = Notification.FLAG_AUTO_CANCEL;  //设置为点击后自动消失
             builder.notificationDefaults = Notification.DEFAULT_SOUND;  //设置为铃声（ Notification.DEFAULT_SOUND）或者震动（ Notification.DEFAULT_VIBRATE）
             JPushInterface.setPushNotificationBuilder(1, builder);
-            Logger.toast(mContext, "Basic Builder - 1");
+            //Logger.toast(mContext, "Basic Builder - 1");
         } else {
             Logger.d(TAG, "Current activity is null, discard event");
         }
@@ -360,7 +360,7 @@ public class JPushModule extends ReactContextBaseJavaModule {
         builder.layoutIconDrawable = IdHelper.getDrawable(mContext, "ic_launcher");
         builder.developerArg0 = "developerArg2";
         JPushInterface.setPushNotificationBuilder(2, builder);
-        Logger.toast(mContext, "Custom Builder - 2");
+        //Logger.toast(mContext, "Custom Builder - 2");
     }
 
     /**
@@ -514,7 +514,7 @@ public class JPushModule extends ReactContextBaseJavaModule {
             String log = "action - onTagOperatorResult, sequence:" + jPushMessage.getSequence()
                     + ", tags: " + jPushMessage.getTags();
             Logger.i(TAG, log);
-            Logger.toast(context, log);
+            //Logger.toast(context, log);
             Logger.i(TAG,"tags size:"+jPushMessage.getTags().size());
             Callback callback = sCacheMap.get(jPushMessage.getSequence());
             if (null != callback) {
@@ -538,7 +538,7 @@ public class JPushModule extends ReactContextBaseJavaModule {
             String log = "action - onCheckTagOperatorResult, sequence:" + jPushMessage.getSequence()
                     + ", checktag: " + jPushMessage.getCheckTag();
             Logger.i(TAG, log);
-            Logger.toast(context, log);
+            //Logger.toast(context, log);
             Callback callback = sCacheMap.get(jPushMessage.getSequence());
             if (null != callback) {
                 WritableMap map = Arguments.createMap();
@@ -557,7 +557,7 @@ public class JPushModule extends ReactContextBaseJavaModule {
             String log = "action - onAliasOperatorResult, sequence:" + jPushMessage.getSequence()
                     + ", alias: " + jPushMessage.getAlias();
             Logger.i(TAG, log);
-            Logger.toast(context, log);
+            //Logger.toast(context, log);
             Callback callback = sCacheMap.get(jPushMessage.getSequence());
             if (null != callback) {
                 WritableMap map = Arguments.createMap();
