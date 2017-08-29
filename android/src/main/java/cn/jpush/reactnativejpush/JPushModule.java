@@ -3,6 +3,7 @@ package cn.jpush.reactnativejpush;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -23,6 +24,10 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 
+import org.json.JSONObject;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +57,8 @@ public class JPushModule extends ReactContextBaseJavaModule {
     private final static String OPEN_NOTIFICATION = "openNotification";
     private final static String RECEIVE_REGISTRATION_ID = "getRegistrationId";
     private final static String CONNECTION_CHANGE = "connectionChange";
+
+
 
     private static HashMap<Integer, Callback> sCacheMap = new HashMap<Integer, Callback>();
 
@@ -408,11 +415,15 @@ public class JPushModule extends ReactContextBaseJavaModule {
         }
     }
 
+
+
     /**
      * 接收自定义消息,通知,通知点击事件等事件的广播
      * 文档链接:http://docs.jiguang.cn/client/android_api/
      */
+
     public static class JPushReceiver extends BroadcastReceiver {
+        private int count = 0;
 
         public JPushReceiver() {
         }
@@ -425,14 +436,10 @@ public class JPushModule extends ReactContextBaseJavaModule {
                     String message = data.getStringExtra(JPushInterface.EXTRA_MESSAGE);
                     Logger.i(TAG, "收到自定义消息: " + message);
                     mEvent = RECEIVE_CUSTOM_MESSAGE;
-                    //add by melody
-                    JPushLocalNotification jpush = new JPushLocalNotification();
-                    jpush.setBuilderId(0);
-                    jpush.setContent("你收到了一条未读消息");
-                    jpush.setTitle("玩家生活");
-                    jpush.setNotificationId(123);
-                    jpush.setBroadcastTime(System.currentTimeMillis());
-                    JPushInterface.addLocalNotification(context, jpush);
+                    /*add by melody 发送本地通知*/
+                    count += 1;
+
+                    sendNotification(context, count);
 
                     if (mRAC != null) {
                         sendEvent();
@@ -505,6 +512,18 @@ public class JPushModule extends ReactContextBaseJavaModule {
             }
         }
 
+    }
+
+    public static void sendNotification(Context context, int count) {
+
+        JPushLocalNotification jpush = new JPushLocalNotification();
+        jpush.setBuilderId(0);
+        jpush.setContent("您收到一条未读消息");
+        jpush.setTitle("玩家生活");
+        jpush.setNotificationId(System.currentTimeMillis()); //生成唯一的id
+        jpush.setBroadcastTime(System.currentTimeMillis());
+        JPushInterface.addLocalNotification(context, jpush);
+        BadgeUtil.setBadgeCount(context, count);
     }
 
     public static class MyJPushMessageReceiver extends JPushMessageReceiver {
